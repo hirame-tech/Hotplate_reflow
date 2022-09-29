@@ -116,3 +116,21 @@ void loop() {
   Serial.println(temperature);
   delay(1000);
 }
+
+void temp_control(int pin, int current_temp, int target_temp){
+  int deviation = target_temp - current_temp;
+  static int old_deviation = deviation;
+  static int sigma = 0;
+  float value;
+  const float param_p = 1;
+  const float param_i = 1;
+  const float param_d = 1;
+  //proportional
+  value = param_p* deviation;
+  //integral
+  sigma += deviation;
+  value += param_i* sigma;
+  //differential
+  value += param_d* (deviation - old_deviation);
+  
+}
